@@ -1,0 +1,6 @@
+{
+  "name": "enterprise-api",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  }
+}
