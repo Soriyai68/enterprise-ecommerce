@@ -38,4 +38,9 @@ class ApiResponse {
   }
 }
 
-module.exports = ApiResponse;
+// Helper function for success responses
+const successResponse = (res, { message = 'Success', data = null, statusCode = 200 }) => {
+  return ApiResponse.success(res, data, message, statusCode);
+};
+
+module.exports = { ApiResponse, successResponse };

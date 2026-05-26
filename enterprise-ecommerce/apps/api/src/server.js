@@ -68,7 +68,7 @@ app.get('/api', (req, res) => {
 });
 
 // Module routes (to be implemented)
-// app.use('/api/auth', require('./modules/auth/routes'));
+app.use('/api/auth', require('./modules/auth/routes'));
 // app.use('/api/users', require('./modules/users/routes'));
 // app.use('/api/products', require('./modules/products/routes'));
 // app.use('/api/orders', require('./modules/orders/routes'));

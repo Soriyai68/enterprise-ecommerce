@@ -42,12 +42,12 @@ const config = {
   email: {
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER || '',
-      pass: process.env.SMTP_PASSWORD || ''
-    }
+    user: process.env.SMTP_USER || '',
+    password: process.env.SMTP_PASSWORD || ''
   },
+
+  // Frontend URL
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
 
   // Payment Gateway
   stripe: {
