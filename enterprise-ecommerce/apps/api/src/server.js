@@ -12,6 +12,7 @@ const { errorHandler, AppError } = require('./common/middleware/errorHandler');
 const { testConnection } = require('./common/config/database');
 const { connectRedis } = require('./common/config/redis');
 
+
 // Initialize Express app
 const app = express();
 
@@ -38,6 +39,17 @@ if (config.env === 'development') {
     stream: { write: message => logger.info(message.trim()) }
   }));
 }
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    status: 'success',
+    message: 'Welcome to Enterprise E-Commerce API',
+    version: '1.0.0',
+    documentation: '/api',
+    health: '/health'
+  });
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -70,10 +82,10 @@ app.get('/api', (req, res) => {
 // Module routes (to be implemented)
 app.use('/api/auth', require('./modules/auth/routes'));
 // app.use('/api/users', require('./modules/users/routes'));
-// app.use('/api/products', require('./modules/products/routes'));
+app.use('/api/products', require('./modules/products/routes'));
 // app.use('/api/orders', require('./modules/orders/routes'));
-// app.use('/api/payments', require('./modules/payments/routes'));
-// app.use('/api/analytics', require('./modules/analytics/routes'));
+app.use('/api/payments', require('./modules/payments/routes'));
+app.use('/api/analytics', require('./modules/analytics/routes'));
 
 // 404 handler
 app.all('*', (req, res, next) => {

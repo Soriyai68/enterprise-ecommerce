@@ -3,6 +3,7 @@ const Role = require('./Role');
 const RoleUser = require('./RoleUser');
 const Permission = require('./Permission');
 const PermissionRole = require('./PermissionRole');
+const AuditLog = require('./AuditLog');
 
 // Initialize associations
 const models = {
@@ -10,7 +11,8 @@ const models = {
   Role,
   RoleUser,
   Permission,
-  PermissionRole
+  PermissionRole,
+  AuditLog
 };
 
 // Set up associations if they exist
@@ -25,5 +27,6 @@ module.exports = {
   Role,
   RoleUser,
   Permission,
-  PermissionRole
+  PermissionRole,
+  AuditLog
 };
