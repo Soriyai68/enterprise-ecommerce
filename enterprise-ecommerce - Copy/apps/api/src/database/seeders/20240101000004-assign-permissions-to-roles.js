@@ -2,17 +2,6 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Check if permission-role associations already exist
-    const existingAssociations = await queryInterface.sequelize.query(
-      `SELECT role_id FROM permission_role LIMIT 1;`,
-      { type: Sequelize.QueryTypes.SELECT }
-    );
-
-    if (existingAssociations.length > 0) {
-      console.log('Permission-role associations already exist, skipping...');
-      return;
-    }
-
     // Get all roles
     const roles = await queryInterface.sequelize.query(
       `SELECT id, code FROM roles;`,
@@ -126,7 +115,7 @@ module.exports = {
 
     // Insert all permission-role associations
     if (permissionRoleData.length > 0) {
-      await queryInterface.bulkInsert('permission_role', permissionRoleData, { validate: false });
+      await queryInterface.bulkInsert('permission_role', permissionRoleData, {});
     }
   },
 

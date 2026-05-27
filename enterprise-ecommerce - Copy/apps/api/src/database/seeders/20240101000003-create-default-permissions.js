@@ -4,17 +4,6 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Check if permissions already exist
-    const existingPermissions = await queryInterface.sequelize.query(
-      `SELECT id FROM permissions LIMIT 1;`,
-      { type: queryInterface.sequelize.QueryTypes.SELECT }
-    );
-
-    if (existingPermissions.length > 0) {
-      console.log('Permissions already exist, skipping...');
-      return;
-    }
-
     const now = new Date();
     
     await queryInterface.bulkInsert('permissions', [
@@ -238,7 +227,7 @@ module.exports = {
         created_at: now,
         updated_at: now
       }
-    ], { validate: false });
+    ], {});
   },
 
   down: async (queryInterface, Sequelize) => {

@@ -90,33 +90,11 @@ const User = sequelize.define('User', {
   preferences: {
     type: DataTypes.JSON,
     defaultValue: {}
-  },
-  created_by: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    field: 'created_by'
-  },
-  updated_by: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    field: 'updated_by'
-  },
-  deleted_by: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    field: 'deleted_by'
-  },
-  deleted_at: {
-    type: DataTypes.DATE,
-    allowNull: true,
-    field: 'deleted_at'
   }
 }, {
   tableName: 'users',
   timestamps: true,
   underscored: true,
-  paranoid: true,
-  deletedAt: 'deleted_at',
   hooks: {
     beforeCreate: async (user) => {
       if (user.password) {
@@ -138,22 +116,6 @@ User.associate = function(models) {
     foreignKey: 'user_id',
     otherKey: 'role_id',
     as: 'roles'
-  });
-
-  // Self-referencing associations for audit tracking
-  User.belongsTo(models.User, {
-    foreignKey: 'created_by',
-    as: 'creator'
-  });
-
-  User.belongsTo(models.User, {
-    foreignKey: 'updated_by',
-    as: 'updater'
-  });
-
-  User.belongsTo(models.User, {
-    foreignKey: 'deleted_by',
-    as: 'deleter'
   });
 };
 
