@@ -107,17 +107,7 @@ class CategoryService {
    * Delete category
    */
   async deleteCategory(categoryId, userId) {
-    const { Brand } = require('../models');
     const category = await this.getCategoryById(categoryId);
-    
-    // Check if category has associated brands
-    const brandCount = await Brand.count({
-      where: { category_id: categoryId }
-    });
-    
-    if (brandCount > 0) {
-      throw new AppError('Cannot delete category with associated brands. Please reassign or delete the brands first.', 400);
-    }
     
     // TODO: Check if category has associated products
     // Uncomment when Product model is created
@@ -139,13 +129,7 @@ class CategoryService {
    * Get category statistics
    */
   async getCategoryStats(categoryId) {
-    const { Brand } = require('../models');
     const category = await this.getCategoryById(categoryId);
-    
-    // Count brands in this category
-    const brandCount = await Brand.count({
-      where: { category_id: categoryId }
-    });
     
     // TODO: Add product count when Product model is created
     // const productCount = await category.countProducts();
@@ -153,7 +137,6 @@ class CategoryService {
     return {
       category,
       stats: {
-        brandCount,
         // productCount,
         createdAt: category.created_at,
         updatedAt: category.updated_at

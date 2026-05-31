@@ -5,10 +5,8 @@
       <Header />
       <el-main class="main-content">
         <div class="content-wrapper">
-          <router-view v-slot="{ Component }">
-            <Transition name="fade" mode="out-in">
-              <component :is="Component" :key="$route.fullPath" />
-            </Transition>
+        <router-view v-slot="{ Component }">
+            <component :is="Component" />
           </router-view>
         </div>
       </el-main>

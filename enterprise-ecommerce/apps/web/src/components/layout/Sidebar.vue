@@ -10,7 +10,7 @@
       @select="handleSelect"
       class="menu"
     >
-      <el-menu-item index="/" route="/">
+      <el-menu-item index="/">
         <el-icon><HomeFilled /></el-icon>
         <span>Dashboard</span>
       </el-menu-item>
@@ -20,30 +20,29 @@
           <el-icon><ShoppingCart /></el-icon>
           <span>Products</span>
         </template>
-        <el-menu-item index="products" route="/products">View All</el-menu-item>
-        <el-menu-item index="add-product" route="/products">Add New</el-menu-item>
-        <el-menu-item index="categories" route="/categories">Categories</el-menu-item>
-        <el-menu-item index="brands" route="/brands">Brands</el-menu-item>
+        <el-menu-item index="products">View All</el-menu-item>
+        <el-menu-item index="categories">Categories</el-menu-item>
+        <el-menu-item index="brands">Brands</el-menu-item>
       </el-sub-menu>
 
-      <el-menu-item index="orders" route="/orders">
+      <el-menu-item index="orders">
         <el-icon><DocumentCopy /></el-icon>
         <span>Orders</span>
       </el-menu-item>
 
-      <el-menu-item index="payments" route="/payments">
+      <el-menu-item index="payments">
         <el-icon><CreditCard /></el-icon>
         <span>Payments</span>
       </el-menu-item>
 
-      <el-menu-item index="analytics" route="/analytics">
+      <el-menu-item index="analytics">
         <el-icon><DataAnalysis /></el-icon>
         <span>Analytics</span>
       </el-menu-item>
 
       <el-divider />
 
-      <el-menu-item index="profile" route="/profile">
+      <el-menu-item index="profile">
         <el-icon><User /></el-icon>
         <span>Profile</span>
       </el-menu-item>
@@ -77,7 +76,26 @@ const authStore = useAuthStore()
 const activeMenu = computed(() => route.name?.toLowerCase() || '/')
 
 const handleSelect = (index) => {
-  // Router navigation is handled by route attribute
+  if (index === 'logout') return
+  if (index.startsWith('/')) {
+    router.push(index)
+  } else if (index === '/') {
+    router.push('/')
+  } else if (index === 'products') {
+    router.push('/products')
+  } else if (index === 'categories') {
+    router.push('/categories')
+  } else if (index === 'brands') {
+    router.push('/brands')
+  } else if (index === 'orders') {
+    router.push('/orders')
+  } else if (index === 'payments') {
+    router.push('/payments')
+  } else if (index === 'analytics') {
+    router.push('/analytics')
+  } else if (index === 'profile') {
+    router.push('/profile')
+  }
 }
 
 const handleLogout = () => {

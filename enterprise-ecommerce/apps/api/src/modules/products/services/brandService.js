@@ -7,8 +7,6 @@ class BrandService {
    * Create a new brand
    */
   async createBrand(brandData, userId) {
-    const { Category } = require('../models');
-
     // Check if brand name already exists
     const existingBrand = await Brand.findOne({
       where: { brand_name: brandData.brand_name }
@@ -18,28 +16,11 @@ class BrandService {
       throw new AppError('Brand name already exists', 409);
     }
 
-    // Validate category_id if provided
-    if (brandData.category_id) {
-      const category = await Category.findByPk(brandData.category_id);
-      if (!category) {
-        throw new AppError('Category not found', 404);
-      }
-    }
-
     // Add created_by
     brandData.created_by = userId;
 
     const brand = await Brand.create(brandData);
     
-    // Load category relationship
-    await brand.reload({
-      include: [{
-        model: Category,
-        as: 'category',
-        attributes: ['category_id', 'category_name']
-      }]
-    });
-
     return brand;
   }
 
@@ -47,8 +28,7 @@ class BrandService {
    * Get all brands with pagination and search
    */
   async getAllBrands(queryParams) {
-    const { Category } = require('../models');
-    const { page = 1, limit = 10, search = '', sort = '-created_at', category_id } = queryParams;
+    const { page = 1, limit = 10, search = '', sort = '-created_at' } = queryParams;
     
     const offset = (page - 1) * limit;
     
@@ -62,11 +42,6 @@ class BrandService {
       ];
     }
 
-    // Filter by category_id if provided
-    if (category_id) {
-      whereClause.category_id = category_id;
-    }
-
     // Parse sort parameter
     const sortField = sort.startsWith('-') ? sort.substring(1) : sort;
     const sortOrder = sort.startsWith('-') ? 'DESC' : 'ASC';
@@ -75,12 +50,7 @@ class BrandService {
       where: whereClause,
       limit: parseInt(limit),
       offset: parseInt(offset),
-      order: [[sortField, sortOrder]],
-      include: [{
-        model: Category,
-        as: 'category',
-        attributes: ['category_id', 'category_name']
-      }]
+      order: [[sortField, sortOrder]]
     });
 
     return {
@@ -98,15 +68,7 @@ class BrandService {
    * Get brand by ID
    */
   async getBrandById(brandId) {
-    const { Category } = require('../models');
-
-    const brand = await Brand.findByPk(brandId, {
-      include: [{
-        model: Category,
-        as: 'category',
-        attributes: ['category_id', 'category_name', 'description']
-      }]
-    });
+    const brand = await Brand.findByPk(brandId);
 
     if (!brand) {
       throw new AppError('Brand not found', 404);
@@ -119,7 +81,6 @@ class BrandService {
    * Update brand
    */
   async updateBrand(brandId, updateData, userId) {
-    const { Category } = require('../models');
     const brand = await this.getBrandById(brandId);
 
     // Check if new brand name already exists (if brand_name is being updated)
@@ -136,28 +97,11 @@ class BrandService {
       }
     }
 
-    // Validate category_id if provided
-    if (updateData.category_id) {
-      const category = await Category.findByPk(updateData.category_id);
-      if (!category) {
-        throw new AppError('Category not found', 404);
-      }
-    }
-
     // Add updated_by
     updateData.updated_by = userId;
 
     await brand.update(updateData);
     
-    // Reload with category relationship
-    await brand.reload({
-      include: [{
-        model: Category,
-        as: 'category',
-        attributes: ['category_id', 'category_name']
-      }]
-    });
-
     return brand;
   }
 

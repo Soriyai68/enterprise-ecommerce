@@ -28,15 +28,6 @@ const Brand = sequelize.define('Brand', {
     allowNull: true,
     field: 'description'
   },
-  category_id: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    field: 'category_id',
-    references: {
-      model: 'categories',
-      key: 'category_id'
-    }
-  },
   created_by: {
     type: DataTypes.UUID,
     allowNull: true,
@@ -67,9 +58,6 @@ const Brand = sequelize.define('Brand', {
     {
       unique: true,
       fields: ['brand_name']
-    },
-    {
-      fields: ['category_id']
     }
   ]
 });
